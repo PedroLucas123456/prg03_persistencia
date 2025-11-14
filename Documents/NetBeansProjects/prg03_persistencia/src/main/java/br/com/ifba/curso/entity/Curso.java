@@ -8,64 +8,72 @@ import br.com.ifba.infrastructure.entity.PersistenceEntity;
 import jakarta.persistence.Entity;
 import java.io.Serializable;
 
-/** *
- * O JPA/Hibernate usará esta classe para: 1. Criar automaticamente a tabela
- * 'curso' no banco (por causa do @Entity). 2. Mapear cada variável (campo)
- * abaixo para uma coluna na tabela. 3. Converter linhas da tabela em objetos
- * 'Curso' (quando fizermos 'listarTodos()'). 4. Converter objetos 'Curso' em
- * linhas na tabela (quando fizermos 'salvar(curso)').
- *
+/**
  * @author PedroLucas
  */
 @Entity // Marca esta classe como uma Entidade gerenciada pelo JPA.
+/**
+ * Representa um curso do sistema.
+ * Esta classe armazena informações básicas como nome, código identificador
+ * e se o curso está ativo ou não.
+ */
 public class Curso extends PersistenceEntity implements Serializable {
 
+    /** Nome do curso. */
     private String nome;
 
-    /**
-     * Campo 'codigoCurso'. O JPA irá criar uma coluna chamada 'codigoCurso' no
-     * banco. (É uma boa prática adicionar @Column(unique = true) aqui para
-     * garantir que não haja dois cursos com o mesmo código).
-     */
+    /** Código identificador único do curso. */
     private String codigoCurso;
 
-    /**
-     * Campo 'ativo'. O JPA irá criar uma coluna 'ativo' no banco, geralmente do
-     * tipo 'boolean' ou 'TINYINT(1)' no MySQL.
-     */
+    /** Indica se o curso está ativo no sistema. */
     private boolean ativo;
 
-    /*
-     * GETTERS E SETTERS
-     *
-     * O JPA EXIGE que a classe de entidade tenha getters e setters públicos
-     * (ou um construtor padrão) para que ele possa "hidratar" (preencher)
-     * o objeto com dados do banco e ler dados do objeto para salvar no banco.
-     *
-     * 'getId' e 'setId' são usados para o ID.
+    /**
+     * Retorna o nome do curso.
+     * @return nome do curso.
      */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * Define o nome do curso.
+     * @param nome nome do curso.
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Retorna o código identificador do curso.
+     * @return código do curso.
+     */
     public String getCodigoCurso() {
         return codigoCurso;
     }
 
+    /**
+     * Define o código identificador do curso.
+     * @param codigoCurso código do curso.
+     */
     public void setCodigoCurso(String codigoCurso) {
         this.codigoCurso = codigoCurso;
     }
 
+    /**
+     * Indica se o curso está ativo.
+     * @return true se o curso estiver ativo, caso contrário false.
+     */
     public boolean isAtivo() {
         return ativo;
     }
 
+    /**
+     * Define se o curso está ativo.
+     * @param ativo true para ativar o curso, false para desativar.
+     */
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-
 }
+
