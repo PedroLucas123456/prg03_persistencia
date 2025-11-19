@@ -22,11 +22,6 @@ public class PersistenceEntity {
 
     /**
      * ANOTAÇÃO: Define a estratégia de geração da chave primária.
-     *
-     * - GenerationType.AUTO: (O que você usou) Deixa o Hibernate "adivinhar".
-     * Com o MySQL, isso geralmente faz o Hibernate criar uma tabela extra (ex:
-     * 'curso_seq') para controlar os IDs. É funcional, mas não ideal.
-     *
      * - GenerationType.IDENTITY: (RECOMENDADO PARA MYSQL) Diz ao Hibernate para
      * usar a coluna 'AUTO_INCREMENT' nativa do MySQL. É mais simples, mais
      * rápido e não cria tabelas extras. Recomendo mudar para 'IDENTITY' quando

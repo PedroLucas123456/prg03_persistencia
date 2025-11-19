@@ -4,8 +4,6 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.curso.dao.CursoDao;
-import br.com.ifba.curso.dao.CursoIDao;
 import br.com.ifba.curso.entity.Curso; // Importa a Entidade (o "molde" dos dados).
 import java.util.List; // Usado para receber a lista de cursos do banco.
 import javax.swing.JOptionPane;
@@ -16,6 +14,8 @@ import javax.swing.event.DocumentListener; // "Ouvinte" que monitora mudanças e
 import javax.swing.event.DocumentEvent; // O "evento" que o DocumentListener escuta (ex: digitação).
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import br.ifba.com.curso.controller.CursoController;
+import br.ifba.com.curso.controller.CursoIController;
 
 /**
  *
@@ -27,7 +27,9 @@ public class CursoListar extends javax.swing.JFrame {
 
     /**
      * Variável que armazena o 'filtrador' da nossa tabela. É o cérebro por trás
-     * da funcionalidade de pesquisa.
+     * da funcionalidade de pesquisa. Ela é declarada aqui (nível da classe)
+     * para que todos os métodos (como 'filtrar()' e o construtor) possam
+     * acessá-la.
      */
     private TableRowSorter<DefaultTableModel> sorter;
 
@@ -40,13 +42,16 @@ public class CursoListar extends javax.swing.JFrame {
         // os componentes visuais (botões, tabela, etc.) que você desenhou.
         initComponents();
 
-        // 1. Pega o "modelo" da tabela. O modelo é quem realmente guarda e gerencia os dados (as linhas e colunas) da JTable.
+        // --- Bloco de Configuração do Filtro da Tabela ---
+        // 1. Pega o "modelo" da tabela. O modelo é quem realmente guarda e 
+        //    gerencia os dados (as linhas e colunas) da JTable.
         DefaultTableModel model = (DefaultTableModel) tblCurso.getModel();
 
         // 2. Cria o objeto 'sorter' (filtrador) e o associa ao 'modelo' da nossa tabela.
         sorter = new TableRowSorter<>(model);
 
         // 3. 'Conecta' o sorter à JTable (tblCurso). 
+        //    Agora a sua JTable sabe como ser filtrada e ordenada.
         tblCurso.setRowSorter(sorter);
 
         //inicia os botões desabilitados
@@ -55,11 +60,13 @@ public class CursoListar extends javax.swing.JFrame {
 
         adicionarListenerSelecaoTabela();
 
+        // --- Fim do Bloco de Configuração do Filtro ---
         // Configura o "ouvinte" (listener) para o campo de pesquisa (txtPesquisar).
         // Isso faz com que a aplicação "sinta" cada tecla digitada.
         adicionarFiltroListener();
 
-        // Chama o método para buscar os dados no banco de dados e popular a tabela assim que a tela é aberta.
+        // Chama o método para buscar os dados no banco de dados
+        // e popular a tabela assim que a tela é aberta.
         preencherTabela();
     }
 
@@ -153,7 +160,8 @@ public class CursoListar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * NOVO MÉTODO: Adiciona um "ouvinte" (listener) à seleção da tabela. Este método será chamado toda vez que o usuário clicar em uma linha.
+     * NOVO MÉTODO: Adiciona um "ouvinte" (listener) à seleção da tabela. Este
+     * método será chamado toda vez que o usuário clicar em uma linha.
      */
     private void adicionarListenerSelecaoTabela() {
         // Pega o "modelo de seleção" da tabela e adiciona um "ouvinte" a ele
@@ -164,7 +172,8 @@ public class CursoListar extends javax.swing.JFrame {
                 // Nós só queremos o evento "final" (quando o usuário solta o mouse).
                 if (!e.getValueIsAdjusting()) {
 
-                    // Verifica se alguma linha está realmente selecionada 'getSelectedRow()' retorna -1 se nada estiver selecionado.
+                    // Verifica se alguma linha está realmente selecionada
+                    // 'getSelectedRow()' retorna -1 se nada estiver selecionado.
                     if (tblCurso.getSelectedRow() != -1) {
                         // Se sim, HABILITA os botões
                         btnEditar.setEnabled(true);
@@ -197,10 +206,10 @@ public class CursoListar extends javax.swing.JFrame {
         btnExcluir.setEnabled(false);
 
         // 3. Cria uma instância do nosso DAO (a classe que "fala" com o banco).
-        CursoIDao cursoDAO = new CursoDao();
+        CursoIController cursoController = new CursoController();
 
         // 4. Chama o método do DAO que vai ao banco e retorna a lista de Cursos.
-        List<Curso> cursos = cursoDAO.listarTodos();
+        List<Curso> cursos = cursoController.listarTodos();
 
         // 5. Boa prática: Verifica se a lista não veio nula 
         //    (o que pode acontecer se o DAO der erro e retornar 'null').
@@ -257,8 +266,8 @@ public class CursoListar extends javax.swing.JFrame {
         String codigoCurso = (String) tblCurso.getModel().getValueAt(modelRow, 1);
 
         // 5. USA O DAO para buscar o objeto 'Curso' COMPLETO no banco
-        CursoIDao cursoDAO = new CursoDao();
-        Curso cursoParaEditar = cursoDAO.buscarPorCodigo(codigoCurso);
+        CursoIController cursoController = new CursoController();
+        Curso cursoParaEditar = cursoController.buscarPorCodigo(codigoCurso);
 
         // 6. Verifica se o curso foi encontrado
         if (cursoParaEditar != null) {
@@ -314,14 +323,14 @@ public class CursoListar extends javax.swing.JFrame {
         // 6. Verifica se o usuário clicou em "SIM" (YES_OPTION)
         if (confirm == JOptionPane.YES_OPTION) {
 
-            CursoIDao cursoDAO = new CursoDao();
+            CursoIController cursoController = new CursoController();
             try {
                 // 7. Busca o objeto 'Curso' COMPLETO usando o código
-                Curso cursoParaExcluir = cursoDAO.buscarPorCodigo(codigoCurso);
+                Curso cursoParaExcluir = cursoController.buscarPorCodigo(codigoCurso);
 
                 if (cursoParaExcluir != null) {
                     // 8. Chama o método de excluir do DAO
-                    cursoDAO.excluir(cursoParaExcluir);
+                    cursoController.excluir(cursoParaExcluir);
 
                     // 9. Mostra mensagem de sucesso
                     JOptionPane.showMessageDialog(this, "Curso excluído com sucesso!");

@@ -4,9 +4,9 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.curso.dao.CursoDao;
-import br.com.ifba.curso.dao.CursoIDao;
-import br.com.ifba.curso.entity.Curso; // Importa a Entidade (o "molde" dos dados).
+import br.ifba.com.curso.controller.CursoController;
+import br.ifba.com.curso.controller.CursoIController;
+import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,7 +18,7 @@ public class CursoAdicionar extends javax.swing.JDialog {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoAdicionar.class.getName());
 
     /**
-     * Criar new form CursoAdicionar
+     * Creates new form CursoAdicionar
      */
     public CursoAdicionar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -107,28 +107,32 @@ public class CursoAdicionar extends javax.swing.JDialog {
 
     private void btnCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarActionPerformed
 
+        // --- ETAPA 1: COLETAR DADOS DA TELA ---
         // Cria um objeto "Curso" (Entidade) em branco, na memória.
         Curso curso = new Curso();
 
-        // Pega o texto que o usuário digitou no campo 'txtNome' e o armazena no objeto 'curso'.
+        // Pega o texto que o usuário digitou no campo 'txtNome' 
+        // e o armazena no objeto 'curso'.
         curso.setNome(txtNome.getText());
 
         // Pega o texto do 'txtCodigo' e armazena no objeto.
         curso.setCodigoCurso(txtCodigo.getText());
 
-        // Define um valor padrão (regra de negócio). Como esta é uma tela de "Adicionar"
+        // Define um valor padrão (regra de negócio).
+        // Como esta é uma tela de "Adicionar"
         curso.setAtivo(true);
 
+        // --- ETAPA 2: TENTAR SALVAR NO BANCO DE DADOS ---
         // Usamos um bloco 'try...catch' porque operações de banco de dados
         // são "arriscadas" e podem falhar (ex: banco offline, código duplicado).
         try {
             // 3. Cria uma instância do nosso DAO (o "garçom" que fala com o banco).
-            CursoIDao cursoDAO = new CursoDao();
+            CursoIController cursoController = new CursoController();
+            cursoController.salvar(curso);
 
-            // 4. "Entrega" o objeto 'curso' (preenchido) para o método 'salvar' do DAO. O DAO fará todo o trabalho de 'persist' e 'commit'.
-            cursoDAO.salvar(curso);
-
-            // 5. Se a linha 'cursoDAO.salvar(curso)' NÃO deu erro (não lançou exceção), significa que o salvamento foi um sucesso.
+            // --- ETAPA 3: RESPOSTA DE SUCESSO ---
+            // 5. Se a linha 'cursoDAO.salvar(curso)' NÃO deu erro (não lançou exceção),
+            //    significa que o salvamento foi um sucesso.
             JOptionPane.showMessageDialog(this,
                     "Curso criado com sucesso",
                     "Sucesso",
@@ -140,8 +144,10 @@ public class CursoAdicionar extends javax.swing.JDialog {
             this.dispose();
 
         } catch (Exception e) {
+            // --- ETAPA 4: RESPOSTA DE FALHA ---
 
-            // 7. Se o 'cursoDAO.salvar()' lançou uma exceção ('throw e'), o código pula para este bloco 'catch'.
+            // 7. Se o 'cursoDAO.salvar()' lançou uma exceção ('throw e'),
+            //    o código pula para este bloco 'catch'.
             JOptionPane.showMessageDialog(this,
                     "Falha ao salvar o curso: " + e.getMessage(), // Mostra a msg de erro
                     "Erro de Banco de Dados",
@@ -186,6 +192,7 @@ public class CursoAdicionar extends javax.swing.JDialog {
         });
     }
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriar;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblNome;

@@ -97,7 +97,6 @@ public class GenericDao<Entity extends PersistenceEntity> implements GenericIDao
         }
     }
 
-// CÓDIGO CORRETO
     @Override
     public Entity buscarId(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();

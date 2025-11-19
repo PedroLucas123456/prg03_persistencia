@@ -4,10 +4,10 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.curso.dao.CursoDao;
-import br.com.ifba.curso.dao.CursoIDao;
 import br.com.ifba.curso.entity.Curso; // Importa a Entidade (o "molde" dos dados).
 import javax.swing.JOptionPane;
+import br.ifba.com.curso.controller.CursoController;
+import br.ifba.com.curso.controller.CursoIController;
 
 /**
  *
@@ -112,9 +112,8 @@ public class CursoEditar extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEditarcursoActionPerformed(java.awt.event.ActionEvent evt) {
-        
-        // 1. Pega o NOVO nome que o usuário digitou
+    private void btnEditarcursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarcursoActionPerformed
+// 1. Pega o NOVO nome que o usuário digitou
         String novoNome = txtNomeedit.getText();
 
         // 2. Validação simples (vê se o campo não está vazio)
@@ -132,10 +131,8 @@ public class CursoEditar extends javax.swing.JDialog {
         // 4. Tenta salvar a atualização no banco de dados
         try {
             // 5. Cria o DAO
-            CursoIDao cursoDAO = new CursoDao();
-
-            // 6. Chama o novo método ATUALIZAR
-            cursoDAO.atualizar(this.cursoParaEditar);
+            CursoIController cursoController = new CursoController();
+            cursoController.salvar(this.cursoParaEditar);
 
             // 7. Se deu certo, mostra mensagem de sucesso
             JOptionPane.showMessageDialog(this,
@@ -143,7 +140,9 @@ public class CursoEditar extends javax.swing.JDialog {
                     "Sucesso",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            //    Isso fará o código na 'CursoListar' (no btnEditar) continuar e atualizar a tabela.
+            // 8. FECHA esta tela (JDialog)
+            //    Isso fará o código na 'CursoListar' (no btnEditar) continuar
+            //    e atualizar a tabela.
             this.dispose();
 
         } catch (Exception e) {
