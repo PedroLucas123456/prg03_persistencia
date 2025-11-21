@@ -4,7 +4,7 @@
  */
 package br.com.ifba.curso.entity;
 
-import br.com.ifba.infrastructure.entity.PersistenceEntity;
+import br.com.ifba.infrastructure.entity.PersistenceEntity_1;
 import jakarta.persistence.Entity;
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ import java.io.Serializable;
  * Esta classe armazena informações básicas como nome, código identificador
  * e se o curso está ativo ou não.
  */
-public class Curso extends PersistenceEntity implements Serializable {
+public class Curso extends PersistenceEntity_1 implements Serializable {
 
     /** Nome do curso. */
     private String nome;
