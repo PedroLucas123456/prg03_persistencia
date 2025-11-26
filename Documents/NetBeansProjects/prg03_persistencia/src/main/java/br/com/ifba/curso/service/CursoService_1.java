@@ -4,35 +4,27 @@
  */
 package br.com.ifba.curso.service;
 
-import br.com.ifba.curso.dao.CursoIDao_1; // Importamos a INTERFACE do DAO (boas práticas)
+import br.com.ifba.repository.CursoRepository; // Importamos a INTERFACE do DAO 
 import br.com.ifba.curso.entity.Curso;
 import br.com.ifba.infrastructure.util.StringUtil; // Sua classe utilitária para checar textos
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * CLASSE SERVICE (O GERENTE) * Função: Onde vive a REGRA DE NEGÓCIO. É aqui que
- * validamos dados (IFs e CHECAGENS) antes de deixar o DAO tocar no banco de
- * dados. * Analogia: O Gerente que verifica se o pedido está correto antes de
- * passar para o Estoquista.
- */
-@Service // <--- ETIQUETA DO SPRING
-// Diz ao Spring: "Isso aqui é um Serviço de Negócio. Deixe ele disponível para ser
-// injetado (@Autowired) lá nos Controllers".
+@Service 
 public class CursoService_1 implements CursoIService_1 {
 
     // @Autowired: O Gerente precisa do Estoquista (DAO) para trabalhar.
     // O Spring traz o DAO pronto e conecta aqui.
     @Autowired
-    private CursoIDao_1 cursoDao;
+    private CursoRepository cursoRepository;
 
     /**
      * Método Salvar (Criar Novo). Aqui aplicamos as regras de validação
      * (negócio).
      */
     @Override
-    public Curso salvar(Curso curso) {
+    public Curso save(Curso curso) {
 
         // REGRA 1: Validar Nome
         // Usamos o StringUtil para ver se é nulo ou vazio ("").
@@ -50,14 +42,14 @@ public class CursoService_1 implements CursoIService_1 {
 
         // SUCESSO: Se passou pelos IFs acima, o dado é confiável.
         // Mandamos o Estoquista (DAO) guardar no banco.
-        return cursoDao.salvar(curso);
+        return cursoRepository.save(curso);
     }
 
     /**
      * Método Atualizar (Editar Existente).
      */
     @Override
-    public Curso atualizar(Curso curso) {
+    public Curso update(Curso curso) {
         // Também validamos na atualização. Ninguém pode apagar o nome do curso
         // e tentar salvar vazio.
         if (StringUtil.isNullOrEmpty(curso.getNome())) {
@@ -65,21 +57,21 @@ public class CursoService_1 implements CursoIService_1 {
         }
 
         // Chama o método 'atualizar' (merge) do DAO.
-        return cursoDao.atualizar(curso);
+        return cursoRepository.save(curso);
     }
 
     /**
      * Método Excluir.
      */
     @Override
-    public void excluir(Curso curso) {
+    public void delete(Curso curso) {
         // Validação básica: não dá pra excluir o "nada".
         if (curso == null) {
             throw new RuntimeException("O curso para excluir não pode ser nulo.");
         }
 
         // Manda o DAO remover.
-        cursoDao.excluir(curso);
+        cursoRepository.delete(curso);
     }
 
     /**
@@ -87,15 +79,15 @@ public class CursoService_1 implements CursoIService_1 {
      * para o DAO.
      */
     @Override
-    public List<Curso> listarTodos() {
-        return cursoDao.listarTodos();
+    public List<Curso> findAll() {
+        return cursoRepository.findAll();
     }
 
     /**
      * Método Buscar Específico.
      */
     @Override
-    public Curso buscarPorCodigo(String codigo) {
-        return cursoDao.buscarPorCodigo(codigo);
+    public Curso findByCodigo(String codigo) {
+        return cursoRepository.findByCodigo(codigo);
     }
 }

@@ -10,13 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 
-/**
- * CLASSE ENTIDADE (O MOLDE DA TABELA) * Função: Representar a tabela 'curso' do
- * banco de dados dentro do Java. * Analogia: É como uma Ficha de Cadastro em
- * branco. Cada variável (nome, código) é um campo dessa ficha. * Quando o
- * Spring roda, ele lê essa classe e pensa: "Opa, preciso criar uma tabela no
- * banco com esses campos aqui".
- */
+
 @Entity // <--- CRUCIAL: Diz ao Spring/JPA que isso vira uma Tabela.
 @Table(name = "curso") // Opcional: Define o nome exato da tabela no banco (ex: 'tbl_curso').
 public class Curso_1 extends PersistenceEntity_1 implements Serializable {
@@ -26,9 +20,6 @@ public class Curso_1 extends PersistenceEntity_1 implements Serializable {
     // nós herdamos dessa classe pai. Assim, o 'Curso' ganha um ID automaticamente.
     /**
      * Coluna do Nome.
-     *
-     * @Column: Permite configurar detalhes do banco. nullable = false: Diz que
-     * NÃO pode salvar curso sem nome (Not Null).
      */
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -74,5 +65,4 @@ public class Curso_1 extends PersistenceEntity_1 implements Serializable {
         this.ativo = ativo;
     }
 
-    // OBS: O getId() e setId() não estão aqui porque foram herdados do 'PersistenceEntity'.
 }

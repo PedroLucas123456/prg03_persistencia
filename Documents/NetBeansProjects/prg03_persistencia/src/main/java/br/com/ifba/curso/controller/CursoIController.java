@@ -7,29 +7,21 @@ package br.com.ifba.curso.controller;
 import br.com.ifba.curso.entity.Curso;
 import java.util.List;
 
-/**
- * INTERFACE DO CONTROLLER (O CONTRATO) * Função: Definir QUAIS métodos o
- * Controller OBRIGATORIAMENTE deve ter. Analogia: É o "Cardápio" ou a
- * "Descrição do Cargo". Ela não diz COMO fazer (não tem código dentro dos
- * métodos), só diz O QUE deve ser feito. * Por que usar? Para diminuir a
- * dependência. A tela conversa com a Interface ("Eu preciso de UM controller"),
- * sem precisar saber exatamente qual classe está rodando por trás.
- */
 public interface CursoIController {
 
     // Define que quem implementar essa interface TEM que saber salvar um Curso.
-    public abstract Curso salvar(Curso curso);
+    public abstract Curso save(Curso curso);
 
     // Tem que saber atualizar.
-    public abstract Curso atualizar(Curso curso);
+    public abstract Curso update(Curso curso);
 
     // Tem que saber excluir.
-    public abstract void excluir(Curso curso);
+    public abstract void delete(Curso curso);
 
     // Tem que saber listar tudo.
-    public abstract List<Curso> listarTodos();
+    public abstract List<Curso> findAll();
 
     // Tem que saber buscar por código.
-    public abstract Curso buscarPorCodigo(String codigo);
+    public abstract Curso findByCodigo(String codigo);
 
 }

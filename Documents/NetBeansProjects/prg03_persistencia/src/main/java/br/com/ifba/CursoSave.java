@@ -7,32 +7,12 @@ import jakarta.persistence.EntityManagerFactory; // A Fábrica (pesada) de Geren
 import jakarta.persistence.Persistence; // Classe de inicialização do JPA
 import jakarta.persistence.NoResultException; // Exceção comum ao buscar um único resultado
 
-/**
- * CLASSE DAO MANUAL (LEGADO) * * FUNÇÃO: Centralizar todas as operações de
- * banco de dados para a entidade Curso, * gerenciando manualmente as conexões e
- * transações JPA. * * ATENÇÃO: Esta classe NÃO é usada na sua arquitetura
- * Spring Boot atual. * Ela foi substituída pelo 'GenericDao' e pelo 'CursoDao',
- * que usam @PersistenceContext e @Transactional.
- */
 public class CursoSave {
 
-    /**
-     * FÁBRICA DE ENTITYMANAGERS (Criação Única) * - 'static final': Garante que
-     * este objeto pesado seja criado APENAS UMA VEZ quando a aplicação iniciar,
-     * economizando recursos. -
-     * Persistence.createEntityManagerFactory("gerenciamento_curso"): Lê o
-     * arquivo 'persistence.xml' e inicializa a conexão com o banco de dados.
-     */
     private static final EntityManagerFactory entityManagerFactory
             = Persistence.createEntityManagerFactory("gerenciamento_curso");
 
-    // =========================================================================
-    // MÉTODOS DE ESCRITA (Requerem Transação)
-    // =========================================================================
-    /**
-     * Salva um NOVO objeto Curso no banco de dados (SQL INSERT).
-     */
-    public void salvar(Curso curso) throws Exception {
+    public void save(Curso curso) throws Exception {
 
         // 1. CRIAÇÃO DO ENTITYMANAGER
         // Deve ser criado para cada operação de banco, pois é leve e não é thread-safe.
@@ -64,7 +44,7 @@ public class CursoSave {
     /**
      * Atualiza um objeto Curso EXISTENTE no banco de dados (SQL UPDATE).
      */
-    public void atualizar(Curso curso) throws Exception {
+    public void update(Curso curso) throws Exception {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
@@ -90,7 +70,7 @@ public class CursoSave {
     /**
      * Exclui um objeto Curso do banco de dados (SQL DELETE).
      */
-    public void excluir(Curso curso) throws Exception {
+    public void delete(Curso curso) throws Exception {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
@@ -114,12 +94,6 @@ public class CursoSave {
         }
     }
 
-    // =========================================================================
-    // MÉTODOS DE LEITURA (Não requerem Transação)
-    // =========================================================================
-    /**
-     * Busca todos os Cursos.
-     */
     public List<Curso> listarTodos() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -141,7 +115,7 @@ public class CursoSave {
     /**
      * Busca um único Curso pelo 'codigoCurso'.
      */
-    public Curso buscarPorCodigo(String codigo) {
+    public Curso findByCodigo(String codigo) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             // JPQL com parâmetro (:codigo)

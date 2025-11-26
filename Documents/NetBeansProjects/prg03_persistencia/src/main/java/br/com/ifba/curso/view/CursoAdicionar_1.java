@@ -8,24 +8,12 @@ import br.com.ifba.curso.controller.CursoIController; // Precisamos da interface
 import br.com.ifba.curso.entity.Curso; // Precisamos da Entidade (o Molde dos dados)
 import javax.swing.JOptionPane;
 
-/**
- * CLASSE VIEW (O FORMULÁRIO POP-UP) * Função: Capturar a entrada de dados do
- * usuário e pedir ao Controller para salvar. * Analogia: É o formulário (folha
- * de pedido) que o cliente preenche.
- */
 public class CursoAdicionar_1 extends javax.swing.JDialog {
 
     // Variável local para guardar a referência do Controller.
     // O Spring NÃO injeta aqui porque o 'new' é chamado fora do contexto dele.
     private CursoIController cursoController;
 
-    /**
-     * CONSTRUTOR MODIFICADO * Função: Receber o Controller "pronto" de quem
-     * criou esta tela. * Por que 3 parâmetros? (Pai, Se é modal, O Controller)
-     * 1. parent (java.awt.Frame): Quem é a janela "mãe" (ex: CursoListar). 2.
-     * modal (boolean): Se 'true', esta tela pausa a janela mãe. 3. controller
-     * (CursoIController): O Controller que o Spring já injetou na tela mãe.
-     */
     public CursoAdicionar_1(java.awt.Frame parent, boolean modal, CursoIController controller) {
         super(parent, modal);
         initComponents();
@@ -109,8 +97,7 @@ public class CursoAdicionar_1 extends javax.swing.JDialog {
 
     /**
      * MÉTODO DO BOTÃO "CRIAR CURSO" * Função: Coletar os dados e acionar a
-     * lógica de negócio. * Analogia: O cliente preenche o formulário e chama o
-     * Garçom para levar o pedido.
+     * lógica de negócio. 
      */
     private void btnCriarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarActionPerformed
 
@@ -126,7 +113,7 @@ public class CursoAdicionar_1 extends javax.swing.JDialog {
         try {
             // Chama o Controller que recebemos. O Controller aciona o Service, que valida
             // e manda o DAO salvar no banco.
-            this.cursoController.salvar(curso); // <--- Usa o Controller INJETADO!
+            this.cursoController.save(curso); // <--- Usa o Controller INJETADO!
 
             // SUCESSO
             JOptionPane.showMessageDialog(this, "Curso criado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -146,7 +133,6 @@ public class CursoAdicionar_1 extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-// --- BLOCO MAIN (APENAS PARA TESTE VISUAL) ---
     /**
      * O método main só existe para você testar a aparência da tela no NetBeans.
      * Ele NUNCA é usado quando o sistema é iniciado pelo Spring Boot.

@@ -19,11 +19,6 @@ import jakarta.annotation.PostConstruct; // Importante para o Spring/Swing
 import org.springframework.beans.factory.annotation.Autowired; // Essencial para a Injeção
 import org.springframework.stereotype.Component; // A anotação chave
 
-/**
- * CLASSE VIEW (TELA PRINCIPAL) * Função: Mostrar dados, capturar eventos de
- * botão e repassar para o Controller. * Analogia: O Dashboard ou a Vitrine. É a
- * única camada que o usuário toca.
- */
 @Component
 // Diz ao Spring: "Isso é um componente. Crie ele e gerencie suas dependências".
 // Isso permite que o Prg03Application.main peça essa tela ao Spring (context.getBean).
@@ -39,11 +34,6 @@ public class CursoListar_1 extends javax.swing.JFrame {
 
     private TableRowSorter<DefaultTableModel> sorter;
 
-    /**
-     * Construtor da classe. ATENÇÃO: Neste momento, o 'cursoController' PODE
-     * AINDA ESTAR NULO. Por isso, só fazemos configurações visuais ou de
-     * listeners.
-     */
     public CursoListar_1() {
         initComponents(); // Inicializa os componentes do NetBeans
 
@@ -61,13 +51,6 @@ public class CursoListar_1 extends javax.swing.JFrame {
         // O carregamento inicial da tabela (preencherTabela()) foi MOVIDO para o @PostConstruct
     }
 
-    /**
-     * MÉTODO DE INICIALIZAÇÃO SEGURA
-     *
-     * @PostConstruct: "Rode este método SOMENTE depois que todos os objetos
-     * (incluindo o 'cursoController') forem injetados e estiverem prontos."
-     * Analogia: É a última checagem antes de abrir a loja.
-     */
     @PostConstruct
     public void aposInicializar() {
         preencherTabela(); // É seguro chamar o Controller agora
@@ -199,7 +182,7 @@ public class CursoListar_1 extends javax.swing.JFrame {
         model.setRowCount(0); // Limpa a tabela para evitar duplicatas
 
         // O Controller injetado é usado para buscar os dados.
-        List<Curso> cursos = this.cursoController.listarTodos(); // <- CHAMA O MUNDO SPRING
+        List<Curso> cursos = this.cursoController.findAll(); // <- CHAMA O MUNDO SPRING
 
         if (cursos != null) {
             for (Curso curso : cursos) {
@@ -249,7 +232,7 @@ public class CursoListar_1 extends javax.swing.JFrame {
         String codigoCurso = (String) tblCurso.getModel().getValueAt(modelRow, 1);
 
         // 5. USA O DAO para buscar o objeto 'Curso' COMPLETO no banco
-        Curso cursoParaEditar = this.cursoController.buscarPorCodigo(codigoCurso);
+        Curso cursoParaEditar = this.cursoController.findByCodigo(codigoCurso);
 
         // 6. Verifica se o curso foi encontrado
         if (cursoParaEditar != null) {
@@ -309,11 +292,11 @@ public class CursoListar_1 extends javax.swing.JFrame {
             CursoIController cursoController = this.cursoController;
             try {
                 // 7. Busca o objeto 'Curso' COMPLETO usando o código
-                Curso cursoParaExcluir = cursoController.buscarPorCodigo(codigoCurso);
+                Curso cursoParaExcluir = cursoController.findByCodigo(codigoCurso);
 
                 if (cursoParaExcluir != null) {
                     // 8. Chama o método de excluir do DAO
-                    cursoController.excluir(cursoParaExcluir);
+                    cursoController.delete(cursoParaExcluir);
 
                     // 9. Mostra mensagem de sucesso
                     JOptionPane.showMessageDialog(this, "Curso excluído com sucesso!");

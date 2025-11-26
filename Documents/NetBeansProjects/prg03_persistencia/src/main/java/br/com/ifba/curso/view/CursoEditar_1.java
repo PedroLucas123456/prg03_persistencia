@@ -8,22 +8,13 @@ import br.com.ifba.curso.entity.Curso; // Entidade que está sendo editada
 import javax.swing.JOptionPane;
 import br.com.ifba.curso.controller.CursoIController; // Interface do Controller (o Garçom)
 
-/**
- * CLASSE VIEW (TELA DE EDIÇÃO) * Função: Receber um objeto de Curso existente,
- * permitir a alteração e mandar atualizar. * Analogia: O Formulário de Correção
- * de Dados.
- */
 public class CursoEditar_1 extends javax.swing.JDialog {
 
 // Variáveis que vão guardar os dados e o Garçom para trabalhar
     private Curso cursoParaEditar;
     private CursoIController cursoController;
 
-    /**
-     * CONSTRUTOR MODIFICADO * Função: Receber todos os dados necessários de
-     * quem chamou a tela. * 4 PARÂMETROS: (Pai, Se é modal, O Curso, O
-     * Controller)
-     */
+    
     public CursoEditar_1(java.awt.Frame parent, boolean modal, Curso curso, CursoIController controller) {
         super(parent, modal);
         initComponents();
@@ -135,8 +126,7 @@ public class CursoEditar_1 extends javax.swing.JDialog {
         try {
             // PONTO CHAVE: Usamos o método 'atualizar'.
             // Por quê? Porque 'cursoParaEditar' já existe no banco (tem ID).
-            // Se usássemos 'salvar', o Hibernate daria erro de "detached entity".
-            this.cursoController.atualizar(this.cursoParaEditar); // <--- ATUALIZAR (MERGE)
+            this.cursoController.update(this.cursoParaEditar); // <--- ATUALIZAR (MERGE)
 
             // SUCESSO
             JOptionPane.showMessageDialog(this, "Curso atualizado com sucesso!");
@@ -167,7 +157,6 @@ public class CursoEditar_1 extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-// --- BLOCO MAIN (APENAS PARA TESTE VISUAL) ---
     public static void main(String args[]) {
         // ... (código do LookAndFeel) ...
         java.awt.EventQueue.invokeLater(() -> {
