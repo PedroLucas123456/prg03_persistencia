@@ -9,10 +9,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import lombok.AllArgsConstructor; 
+import lombok.Data;              
+import lombok.EqualsAndHashCode; 
+import lombok.NoArgsConstructor;
 
 
 @Entity // <--- CRUCIAL: Diz ao Spring/JPA que isso vira uma Tabela.
 @Table(name = "curso") // Opcional: Define o nome exato da tabela no banco (ex: 'tbl_curso').
+@Data // Gera Getters, Setters, ToString, etc.
+@AllArgsConstructor // Gera construtor com tudo
+@NoArgsConstructor // Gera construtor vazio (obrigatório pro JPA)
+@EqualsAndHashCode(callSuper = false)
+
 public class Curso_1 extends PersistenceEntity_1 implements Serializable {
 
     // 'extends PersistenceEntity': 
@@ -37,32 +46,5 @@ public class Curso_1 extends PersistenceEntity_1 implements Serializable {
      */
     @Column(name = "ativo")
     private boolean ativo;
-
-    // --- GETTERS E SETTERS ---
-    // O Java (e o Spring) precisa desses métodos para ler e escrever 
-    // nas variáveis privadas acima. É como se fossem as canetas para preencher a ficha.
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCodigoCurso() {
-        return codigoCurso;
-    }
-
-    public void setCodigoCurso(String codigoCurso) {
-        this.codigoCurso = codigoCurso;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
 
 }

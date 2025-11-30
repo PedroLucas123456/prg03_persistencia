@@ -5,16 +5,20 @@
 package br.com.ifba.curso.controller;
 
 import br.com.ifba.curso.entity.Curso;
-import br.com.ifba.curso.service.CursoIService_1;
+import br.com.ifba.curso.service.CursoService_1;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Controller 
+@RequiredArgsConstructor
+@Slf4j
+
 public class CursoController implements CursoIController {
     
-    @Autowired
-    private CursoIService_1 cursoService;
+    private CursoService_1 cursoService;
 
     /**
      * Recebe um curso da Tela e manda o Service salvar.
@@ -22,6 +26,7 @@ public class CursoController implements CursoIController {
     @Override
     public Curso save(Curso curso) {
         // O Controller é preguiçoso: ele só repassa a tarefa.
+        log.info("Controller: Recebendo pedido para salvar curso: {}", curso.getNome());
         return cursoService.save(curso);
     }
 
@@ -30,6 +35,7 @@ public class CursoController implements CursoIController {
      */
     @Override
     public Curso update(Curso curso) {
+        log.info("Controller: Recebendo pedido para atualizar curso ID: {}", curso.getId());
         return cursoService.update(curso);
     }
 
@@ -38,6 +44,7 @@ public class CursoController implements CursoIController {
      */
     @Override
     public void delete(Curso curso) {
+        log.info("Controller: Recebendo pedido para deletar curso.");
         cursoService.delete(curso);
     }
 
@@ -47,6 +54,7 @@ public class CursoController implements CursoIController {
      */
     @Override
     public List<Curso> findAll() {
+        log.info("Controller: Solicitando lista de todos os cursos.");
         return cursoService.findAll();
     }
 
@@ -55,6 +63,7 @@ public class CursoController implements CursoIController {
      */
     @Override
     public Curso findByCodigo(String codigo) {
+        log.info("Controller: Buscando curso por código: {}", codigo);
         return cursoService.findByCodigo(codigo);
     }
 }

@@ -16,7 +16,7 @@ public class Prg03Application {
 
         ConfigurableApplicationContext context
                 = new SpringApplicationBuilder(Prg03Application.class)
-                        .headless(false) // <--- IMPORTANTE: "Não rode sem cabeça! Eu tenho tela."
+                        .headless(false)
                         .run(args);      // <--- Aqui o Spring liga, conecta no banco e cria todos os objetos.
 
         CursoListar_1 telaPrincipal = context.getBean(CursoListar_1.class);

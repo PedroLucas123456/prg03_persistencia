@@ -14,7 +14,6 @@ public class CursoSave {
 
     public void save(Curso curso) throws Exception {
 
-        // 1. CRIAÇÃO DO ENTITYMANAGER
         // Deve ser criado para cada operação de banco, pois é leve e não é thread-safe.
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
